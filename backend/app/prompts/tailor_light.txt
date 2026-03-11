@@ -47,7 +47,7 @@ Use this structure:
 - # Name
 - Contact info on one line
 - ## Summary
-- ## Experience (each job as ### Company | Role | Dates, with **Area:** sub-groups for bullet points)
+- ## Experience (each job as ### Company | Role | Dates, with the area name in bold as sub-group headers — e.g., **Leadership**, **Technical**, **Delivery**)
 - ## Skills
 - ## Projects (if applicable)
 - ## Education
