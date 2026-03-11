@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Environment
+.env
+*.db
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# Exports
+exports/
+
+# OS
+.DS_Store
+Thumbs.db

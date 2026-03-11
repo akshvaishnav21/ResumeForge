@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(source:*)",
+      "Bash(taskkill:*)",
+      "Bash(npx vite:*)",
+      "Bash(curl:*)",
+      "Bash(echo:*)"
+    ]
+  }
+}

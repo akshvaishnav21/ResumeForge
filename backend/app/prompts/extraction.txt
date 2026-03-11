@@ -1,0 +1,18 @@
+You are an expert recruiter and resume analyst. Extract structured requirements from the job description below.
+
+Analyze the job description and return a JSON object with these exact fields:
+- "job_title": string
+- "company": string (if mentioned)
+- "required_skills": array of strings (must-have technical skills)
+- "preferred_skills": array of strings (nice-to-have skills)
+- "required_experience_years": number or null
+- "key_responsibilities": array of strings (top 5-7)
+- "education_requirements": string
+- "keywords": array of strings (ATS keywords to include)
+- "industry": string
+- "seniority_level": string (junior/mid/senior/lead/principal)
+
+Return ONLY valid JSON, no explanation, no markdown code blocks.
+
+JOB DESCRIPTION:
+{{JD_TEXT}}

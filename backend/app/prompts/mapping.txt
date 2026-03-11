@@ -1,0 +1,19 @@
+You are an expert resume consultant. Analyze how well the candidate's master resume matches the job requirements.
+
+For each requirement, identify which resume items best address it. Focus on concrete, factual matches.
+
+Return a JSON object with:
+- "strong_matches": array of strings (requirements well-covered by resume)
+- "partial_matches": array of strings (requirements partially covered)
+- "gaps": array of strings (requirements not covered)
+- "recommended_items": object mapping requirement -> array of resume item descriptions to highlight
+- "ats_keywords_present": array of strings (keywords from requirements found in resume)
+- "ats_keywords_missing": array of strings (important keywords NOT in resume)
+
+Return ONLY valid JSON, no explanation.
+
+REQUIREMENTS:
+{{REQUIREMENTS_JSON}}
+
+MASTER RESUME:
+{{MASTER_RESUME_JSON}}
