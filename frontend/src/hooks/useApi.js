@@ -1,6 +1,11 @@
 export async function apiFetch(path, options = {}) {
+  const geminiKey = sessionStorage.getItem('gemini_api_key')
   const res = await fetch(path, {
-    headers: { 'Content-Type': 'application/json', ...options.headers },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(geminiKey ? { 'X-Gemini-Api-Key': geminiKey } : {}),
+      ...options.headers,
+    },
     ...options,
     body: options.body ? JSON.stringify(options.body) : undefined,
   })
@@ -11,4 +16,13 @@ export async function apiFetch(path, options = {}) {
   }
 
   return res.json()
+}
+
+export function setApiKey(key) {
+  if (key) sessionStorage.setItem('gemini_api_key', key)
+  else sessionStorage.removeItem('gemini_api_key')
+}
+
+export function getApiKey() {
+  return sessionStorage.getItem('gemini_api_key') || ''
 }

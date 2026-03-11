@@ -39,6 +39,7 @@ async def tailor(
     enable_validation: bool = True,
     company: str = "",
     role: str = "",
+    gemini_api_key: Optional[str] = None,
 ) -> Tuple[str, Optional[int], Optional[str], str]:
     """Returns (tailored_markdown, ats_score, ats_feedback, model_used)"""
 
@@ -56,7 +57,8 @@ async def tailor(
         [{"role": "user", "content": mapping_prompt}],
         temperature=0.1,
         max_tokens=2048,
-        preferred_model=preferred_model
+        preferred_model=preferred_model,
+        gemini_api_key=gemini_api_key,
     )
 
     # Step 3: Tailoring
@@ -78,7 +80,8 @@ async def tailor(
         [{"role": "user", "content": tailor_prompt}],
         temperature=0.3,
         max_tokens=8192,
-        preferred_model=preferred_model
+        preferred_model=preferred_model,
+        gemini_api_key=gemini_api_key,
     )
 
     # Step 4: Validation (optional)
@@ -97,7 +100,8 @@ async def tailor(
                 [{"role": "user", "content": validation_prompt}],
                 temperature=0.0,
                 max_tokens=1024,
-                preferred_model=preferred_model
+                preferred_model=preferred_model,
+                gemini_api_key=gemini_api_key,
             )
 
             json_match = re.search(r'\{[\s\S]*\}', validation_text)

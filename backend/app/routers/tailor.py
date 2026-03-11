@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Header
+from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
 
@@ -11,7 +12,11 @@ from ..config import settings
 router = APIRouter(prefix="/api", tags=["tailor"])
 
 @router.post("/tailor", response_model=TailorResponse)
-async def tailor_resume(request: TailorRequest, session: AsyncSession = Depends(get_session)):
+async def tailor_resume(
+    request: TailorRequest,
+    session: AsyncSession = Depends(get_session),
+    x_gemini_api_key: Optional[str] = Header(None),
+):
     import json
 
     # Get master resume
@@ -27,7 +32,8 @@ async def tailor_resume(request: TailorRequest, session: AsyncSession = Depends(
     try:
         requirements, model_used = await jd_analyzer.analyze_jd(
             request.job_description,
-            preferred_model=request.preferred_model
+            preferred_model=request.preferred_model,
+            gemini_api_key=x_gemini_api_key,
         )
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"LLM call failed during JD analysis: {e}")
@@ -45,6 +51,7 @@ async def tailor_resume(request: TailorRequest, session: AsyncSession = Depends(
             enable_validation=settings.enable_validation,
             company=request.company,
             role=request.role,
+            gemini_api_key=x_gemini_api_key,
         )
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"LLM call failed during tailoring: {e}")

@@ -6,15 +6,17 @@ async def generate(
     messages: List[Dict[str, str]],
     temperature: float = 0.3,
     max_tokens: int = 4096,
-    preferred_model: Optional[str] = None
+    preferred_model: Optional[str] = None,
+    gemini_api_key: Optional[str] = None,
 ) -> tuple[str, str]:
     """Returns (response_text, model_used)"""
 
+    effective_gemini_key = gemini_api_key or settings.gemini_api_key
     errors = []
 
-    if settings.gemini_api_key and preferred_model != "azure":
+    if effective_gemini_key and preferred_model != "azure":
         try:
-            text = await _call_gemini(messages, temperature, max_tokens)
+            text = await _call_gemini(messages, temperature, max_tokens, gemini_api_key=effective_gemini_key)
             return text, "gemini"
         except Exception as e:
             errors.append(f"Gemini: {e}")
@@ -30,14 +32,14 @@ async def generate(
 
     if errors:
         raise RuntimeError(f"All models failed: {'; '.join(errors)}")
-    raise RuntimeError("No LLM configured. Set GEMINI_API_KEY or AZURE_OPENAI_API_KEY.")
+    raise RuntimeError("No API key provided. Please enter your Gemini API key.")
 
 
-async def _call_gemini(messages: List[Dict[str, str]], temperature: float, max_tokens: int) -> str:
+async def _call_gemini(messages: List[Dict[str, str]], temperature: float, max_tokens: int, gemini_api_key: Optional[str] = None) -> str:
     from google import genai
     from google.genai import types
 
-    client = genai.Client(api_key=settings.gemini_api_key)
+    client = genai.Client(api_key=gemini_api_key or settings.gemini_api_key)
 
     # Convert messages list to single prompt
     parts = []
@@ -76,10 +78,11 @@ async def _call_azure(messages: List[Dict[str, str]], temperature: float, max_to
     return response.choices[0].message.content
 
 
-async def get_model_status() -> Dict[str, Any]:
+async def get_model_status(gemini_api_key: Optional[str] = None) -> Dict[str, Any]:
     status = {}
 
-    if settings.gemini_api_key:
+    effective_key = gemini_api_key or settings.gemini_api_key
+    if effective_key:
         status["gemini"] = {"available": True, "model": settings.gemini_model}
     else:
         status["gemini"] = {"available": False, "error": "No API key configured"}
