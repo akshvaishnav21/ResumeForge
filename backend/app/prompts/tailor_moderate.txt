@@ -51,7 +51,7 @@ EMPHASIS FORMATTING:
 
 Output a complete, well-formatted resume in Markdown. Use this structure:
 - # Name
-- Contact info on one line
+- Contact info on one line — if `website` is present in the master resume, include it as `[Vibe Coding Portfolio](url)` (a markdown hyperlink)
 - ## Summary
 - ## Experience (each job as ### Company | Role | Dates, with the area name in bold as sub-group headers — e.g., **Leadership**, **Technical**, **Delivery**)
 - ## Skills

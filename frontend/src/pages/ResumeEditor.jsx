@@ -8,6 +8,10 @@ const EMPTY_PROJECT = { name: '', description: '', technologies: [], bullets: []
 const EMPTY_EDUCATION = { institution: '', degree: '', field: '', graduation_date: '', gpa: '' }
 const EMPTY_CERT = { name: '', issuer: '', date: '' }
 
+const CONTACT_LABELS = {
+  website: 'Vibe coding portfolio',
+}
+
 function SectionHeader({ title, onAdd, addLabel }) {
   return (
     <div className="flex justify-between items-center mb-2">
@@ -245,7 +249,7 @@ export default function ResumeEditor() {
                 <input
                   key={key}
                   type="text"
-                  placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+                  placeholder={CONTACT_LABELS[key] || key.charAt(0).toUpperCase() + key.slice(1)}
                   value={data.contact[key] || ''}
                   onChange={e => setData(d => ({ ...d, contact: { ...d.contact, [key]: e.target.value } }))}
                   className="border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
