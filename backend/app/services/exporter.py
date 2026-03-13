@@ -69,12 +69,12 @@ def to_pdf(content: str) -> bytes:
         FONT = 'Helvetica'
 
     pdf.add_page()
-    pdf.set_left_margin(12)
-    pdf.set_right_margin(12)
-    pdf.set_y(8)
+    pdf.set_left_margin(14)
+    pdf.set_right_margin(14)
+    pdf.set_y(10)
 
-    LH = 3.2  # line height
-    FS = 8    # font size
+    LH = 3.6  # line height
+    FS = 8.5  # font size
 
     def write_rich(text, font_size=FS, line_h=LH):
         """Write text with **bold** support and [link](url) hyperlinks."""
@@ -137,7 +137,7 @@ def to_pdf(content: str) -> bytes:
         line = line.rstrip()
 
         if not line:
-            pdf.ln(1)
+            pdf.ln(2.2)
             continue
 
         # H1 — Name
@@ -150,20 +150,20 @@ def to_pdf(content: str) -> bytes:
         # H2 — Section
         if line.startswith('## '):
             text = _strip_bold(line[3:])
-            pdf.ln(2.0)
+            pdf.ln(3.0)
             pdf.set_font(FONT, 'B', 9.5)
             pdf.cell(0, 4, text.upper(), ln=True)
             y = pdf.get_y()
             pdf.set_draw_color(150, 150, 150)
             pdf.set_line_width(0.2)
             pdf.line(pdf.l_margin, y, pdf.w - pdf.r_margin, y)
-            pdf.ln(1)
+            pdf.ln(1.5)
             continue
 
         # H3 — Job / Company (split layout: left bold, right-aligned dates)
         if line.startswith('### '):
             text = _strip_bold(line[4:])
-            pdf.ln(1)
+            pdf.ln(2)
             parts = [p.strip() for p in text.split('|')]
             if len(parts) >= 3:
                 company, role = parts[0], parts[1]
@@ -191,15 +191,16 @@ def to_pdf(content: str) -> bytes:
             pdf.set_font(FONT, '', FS)
             pdf.cell(3, LH, '\u2022' if FONT != 'Helvetica' else '-', ln=False)
             write_rich(bullet_text)
-            pdf.ln(LH + 0.3)
+            pdf.ln(LH + 0.6)
             continue
 
         # Bold area label like **Area Name:** or **Area Name**
         if re.match(r'^\*\*.*\*\*:?\s*$', line):
             text = _strip_bold(line).rstrip(':').strip()
-            pdf.ln(1.0)
-            pdf.set_font(FONT, 'B', FS)
+            pdf.ln(1.5)
+            pdf.set_font(FONT, 'B', FS - 0.3)
             pdf.cell(0, LH, text + ':', ln=True)
+            pdf.ln(0.5)
             continue
 
         # Contact line or plain text
