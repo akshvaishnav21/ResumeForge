@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from .database import create_db_and_tables
-from .routers import tailor, resume, history, export, models_status
+from .routers import tailor, resume, history, export, models_status, admin
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -27,6 +27,7 @@ app.include_router(resume.router)
 app.include_router(history.router)
 app.include_router(export.router)
 app.include_router(models_status.router)
+app.include_router(admin.router)
 
 @app.get("/health")
 async def health():
