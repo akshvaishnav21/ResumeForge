@@ -4,7 +4,7 @@ from sqlmodel import SQLModel
 
 from .config import settings
 
-engine = create_async_engine(settings.effective_database_url, echo=False)
+engine = create_async_engine(settings.database_url, echo=False)
 AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 async def create_db_and_tables():
